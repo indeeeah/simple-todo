@@ -1,6 +1,9 @@
 <script lang="ts">
   import Router from 'svelte-spa-router'
   import routes from './routes/index'
+    import Layout from './components/Layout.svelte';
 </script>
 
-<Router {routes} />
+<Layout>
+  <Router {routes} />
+</Layout>
