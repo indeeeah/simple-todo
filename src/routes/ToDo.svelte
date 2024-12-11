@@ -23,7 +23,7 @@
 
 <main>
     <h1>To-do List</h1>
-    <input type="text" bind:value={text} />
+    <input type="text" bind:value={text} class="bg-blue-400" />
     <button on:click={addTodo}>Add</button>
     <table>
         <thead>
