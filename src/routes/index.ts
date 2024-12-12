@@ -3,7 +3,7 @@ import ToDo from "./ToDo.svelte";
 
 const routes = {
     '/': Home,
-    '/to-do': ToDo,
+    '/to-do/:date': ToDo,
 }
 
 export default routes;

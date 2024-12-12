@@ -1,28 +1,36 @@
-<script>
-    import { link } from 'svelte-spa-router';
+<script lang="ts">
+    import HomeIcon from '$lib/icons/HomeIcon.svelte';
+    import ListIcon from '$lib/icons/ListIcon.svelte';
+    import { today } from '@internationalized/date';
+    import { AppRail, AppRailAnchor } from '@skeletonlabs/skeleton';
+    import { onMount } from 'svelte';
 
+    $: currentRoute = window.location.hash.slice(1);;
+
+    let now = today('Asia/Seoul');
+    let currentTile: number = 0;
     let navItems = [
-      { name: "Home", href: "/" },
-      { name: "To-do", href: "/to-do" },
+    { name: "Home", href: "/#/", icon: HomeIcon },
+    { name: "To-do", href: "/#/to-do/" + now, icon: ListIcon},
     ];
-  </script>
-  
-  <div class="flex">
-    <nav class="bg-gray-800 text-white w-64 fixed top-0 left-0 h-full">
-      <div class="p-4 font-bold text-lg border-b border-gray-700">
-        My Navigator
-      </div>
-      <ul class="mt-4 space-y-2">
-        {#each navItems as item}
-          <li>
-            <a
-              use:link href={item.href}
-              class="block px-4 py-2 hover:bg-gray-700 rounded transition"
-            >
-              {item.name}
-            </a>
-          </li>
-        {/each}
-      </ul>
-    </nav>
-  </div>
+
+
+    onMount(() => {
+        const updateRoute = () => {
+            currentRoute = window.location.hash.slice(1); // 해시값에서 경로 추출
+        };
+        window.addEventListener('hashchange', updateRoute);
+        return () => window.removeEventListener('hashchange', updateRoute);
+    });
+</script>
+
+<AppRail>
+     {#each navItems as item}
+        <AppRailAnchor bind:group={currentTile} name={item.name} selected={currentRoute === item.href.replace('/#', '')} title={item.name} href={item.href}>
+            <svelte:fragment slot="lead">
+                <svelte:component this={item.icon} />
+            </svelte:fragment>
+            <span>{item.name}</span>
+        </AppRailAnchor>        
+    {/each}
+</AppRail>
